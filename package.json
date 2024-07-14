@@ -1,5 +1,5 @@
 {
-  "name": "new-to-do",
+  "name": "to-do-crud",
   "version": "0.1.0",
   "private": true,
   "proxy": "https://crudapi.co.uk/",
