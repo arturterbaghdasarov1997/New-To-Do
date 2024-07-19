@@ -1,24 +1,21 @@
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import ToDoForm from './components/ToDoForm';
+import MainPage from './pages/MainPage';
+import CreatePage from './pages/CreatePage';
+import EditPage from './pages/EditPage';
 
 const API_URL = '/api/v1/task';
-const API_KEY = 'IGmOtQu55Iua_yO7W2G1AIsECXW4se7CN55bbqqhiTW8fgb2iA';
 
 function App() {
   const [taskList, setTaskList] = useState([]);
-  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
-    getTasks();
-  }, []);
-
-  const getTasks = () => {
     fetch(API_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${API_KEY}`,
+        "Authorization": `Bearer ${process.env.REACT_APP_API_KEY}`,
       }
     })
     .then(res => {
@@ -27,34 +24,76 @@ function App() {
     })
     .then(data => setTaskList(data.items.map(task => ({
       taskName: task.taskName,
+      taskAuthorName: task.taskAuthorName,
+      taskAuthorLastname: task.taskAuthorLastname,
+      taskDate: task.taskDate,
       id: task._uuid,
       isCompleted: task.isCompleted,
       tags: task.tags || []
     }))))
-    .catch(err => console.log(err));
-  };
+    .catch(err => console.error("Fetch error: ", err));
+  }, []);
 
-  const onFormSubmit = (taskName) => {
-    fetch(API_URL, {
+  const createTask = (task) => {
+    const { taskName, taskAuthorName, taskAuthorLastname, taskDate } = task;
+    return fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${API_KEY}`,
+        "Authorization": `Bearer ${process.env.REACT_APP_API_KEY}`,
       },
-      body: JSON.stringify([{ taskName, isCompleted: false, tags: [] }])
+      body: JSON.stringify([{ taskName, taskAuthorName, taskAuthorLastname, taskDate, isCompleted: false, tags: [] }])
     })
     .then(res => {
-      if (!res.ok) throw new Error("Response Failed!");
+      if (!res.ok) {
+        return res.text().then(text => {
+          console.error("Error response text:", text);
+          throw new Error(`Create Failed! ${text}`);
+        });
+      }
       return res.json();
-    })
-    .then(data => setTaskList(prev => [{
-      taskName: data.items[0].taskName,
-      id: data.items[0]._uuid,
-      isCompleted: data.items[0].isCompleted,
-      tags: data.items[0].tags
-    }, ...prev]))
-    .catch(err => console.log(err));
+    });
   };
+
+  const updateTask = (task) => {
+    const { id, taskName, taskAuthorName, taskAuthorLastname, taskDate } = task;
+    const url = `${API_URL}/${id}`;
+    return fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.REACT_APP_API_KEY}`,
+      },
+      body: JSON.stringify({ taskName, taskAuthorName, taskAuthorLastname, taskDate, isCompleted: false, tags: [] })
+    })
+    .then(res => {
+      if (!res.ok) {
+        return res.text().then(text => {
+          console.error("Error response text:", text);
+          throw new Error(`Update Failed! ${text}`);
+        });
+      }
+      return res.json();
+    });
+  };
+
+  const handleTaskSubmit = (task) => {
+    const { id } = task;
+    const apiCall = id ? updateTask : createTask;
+    
+    apiCall(task)
+      .then(data => {
+        const newTask = data;
+        setTaskList(prevTasks =>
+          id
+            ? prevTasks.map(task => task.id === id ? newTask : task)
+            : [newTask, ...prevTasks]
+        );
+      })
+      .catch(err => {
+        console.error("Task submission error: ", err);
+      });
+  };  
 
   const toggleCompletion = (id) => {
     const updatedTasks = taskList.map(task =>
@@ -67,86 +106,44 @@ function App() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${API_KEY}`,
+        "Authorization": `Bearer ${process.env.REACT_APP_API_KEY}`,
       },
       body: JSON.stringify({ isCompleted: updatedTask.isCompleted })
     })
-    .catch(err => console.log(err));
-  };
-
-  const editTaskName = (id, newName) => {
-    const updatedTasks = taskList.map(task =>
-      task.id === id ? { ...task, taskName: newName } : task
-    );
-    setTaskList(updatedTasks);
-
-    fetch(`${API_URL}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${API_KEY}`,
-      },
-      body: JSON.stringify({ taskName: newName })
-    })
-    .catch(err => console.log(err));
-  };
-
-  const handleEdit = (id, newName) => {
-    editTaskName(id, newName);
-  };
-
-  const toggleEdit = (id) => {
-    setEditId(id === editId ? null : id);
+    .catch(err => console.error("Completion toggle error: ", err));
   };
 
   const deleteTask = (id) => {
     fetch(`${API_URL}/${id}`, {
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${API_KEY}`,
+        "Authorization": `Bearer ${process.env.REACT_APP_API_KEY}`,
       },
     })
     .then(res => {
       if (!res.ok) throw new Error("Delete Failed!");
       setTaskList(prev => prev.filter(task => task.id !== id));
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error("Task deletion error: ", err));
   };
 
   return (
-    <div className='App'>
-      <ToDoForm onFormSubmit={onFormSubmit} />
-        <div className='tasksToggle'>
-          <button onClick={getTasks}>GET Tasks</button>
-          <button onClick={() => setTaskList([])}>Clear Tasks</button>
-        </div>
-
-      {taskList.map((task) => (
-        <div key={task.id} className='Task'>
-          {editId === task.id ? (
-            <>
-              <input
-                type="text"
-                value={task.taskName}
-                onChange={(e) => handleEdit(task.id, e.target.value)}
-                className="input"
-              />
-              <button className='Done' onClick={() => toggleEdit(task.id)}>Done</button>
-            </>
-          ) : (
-            <>
-              <h3>{task.taskName}</h3>
-              <p>Completed: {task.isCompleted ? "Yes" : "No"}</p>
-              <button className={task.isCompleted ? 'MarkIncomplete' : 'MarkComplete'} onClick={() => toggleCompletion(task.id)}>
-                {task.isCompleted ? "Mark as Incomplete" : "Mark as Complete"}
-              </button>
-              <button className='Edit' onClick={() => toggleEdit(task.id)}>Edit</button>
-              <button style={{ backgroundColor: 'red', color: 'white', border: 'none', padding: '0.5rem 1rem', cursor: 'pointer' }} className='Delete' onClick={() => deleteTask(task.id)}>Delete</button>
-            </>
-          )}
-        </div>
-      ))}
-    </div>
+    <Router>
+      <div className='App'>
+        <Routes>
+          <Route path="/" element={
+            <MainPage
+              taskList={taskList}
+              toggleCompletion={toggleCompletion}
+              deleteTask={deleteTask}
+            />
+          } />
+          <Route path='/' element={<MainPage />}/>
+          <Route path="/create" element={<CreatePage onFormSubmit={handleTaskSubmit} />} />
+          <Route path="/edit/:id" element={<EditPage taskList={taskList} onFormSubmit={handleTaskSubmit} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
