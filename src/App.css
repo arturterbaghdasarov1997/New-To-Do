@@ -1,21 +1,61 @@
 .App {
   font-family: Arial, sans-serif;
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
 
 .taskForm {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
   padding: 6px 10px;
   margin-bottom: 10px;
   font-size: 14px;
   border: 1px solid blue;
   border-radius: 4px;
-  width: 600px;
   box-sizing: border-box;
+}
+
+.taskForm input {
+  flex: 1;
+  min-width: 150px;
+}
+
+.taskForm button {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: green;
+  color: white;
+  border: none;
+}
+
+.Task {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border: 1px solid blue;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.Task input {
+  flex: 1;
+  max-width: 800px;
+  width: 100%;
+}
+
+.Task button {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: green;
+  color: white;
+  border: none;
 }
 
 .tasksToggle {
@@ -67,6 +107,13 @@
   margin-bottom: 10px;
   padding: 10px;
   background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.taskButtons {
+  display: flex;
 }
 
 .Task h3 {
@@ -87,6 +134,8 @@
   padding: 6px 10px;
   margin-right: 10px;
   font-size: 14px;
+  flex: 1;
+  min-width: 150px;
 }
 
 .Task button.Done {
