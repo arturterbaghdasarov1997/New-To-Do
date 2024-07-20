@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import MainPage from './pages/MainPage';
 import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
+import Header from './Header';
 
 const API_URL = '/api/v1/task';
 
@@ -130,6 +131,7 @@ function App() {
   return (
     <Router>
       <div className='App'>
+        <Header />
         <Routes>
           <Route path="/" element={
             <MainPage
