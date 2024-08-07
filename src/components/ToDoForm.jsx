@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 const ToDoForm = ({ onFormSubmit, editId, task }) => {
   const [taskName, setTaskName] = useState('');
@@ -7,6 +8,7 @@ const ToDoForm = ({ onFormSubmit, editId, task }) => {
   const [taskAuthorLastname, setTaskAuthorLastname] = useState('');
   const [taskDate, setTaskDate] = useState('');
   const [error, setError] = useState('');
+  const theme = useSelector(state => state.theme);
 
   useEffect(() => {
     if (task) {
@@ -40,11 +42,12 @@ const ToDoForm = ({ onFormSubmit, editId, task }) => {
   };
 
   return (
-    <form className="taskForm" onSubmit={handleSubmit}>
+    <form className={`taskForm ${theme}`} onSubmit={handleSubmit}>
       {error && <p className="error">{error}</p>}
       <input
         type="text"
         placeholder="Task Name"
+        className={`inputForm ${theme}`} onSubmit={handleSubmit}
         value={taskName}
         onChange={(e) => setTaskName(e.target.value)}
         required
@@ -52,6 +55,7 @@ const ToDoForm = ({ onFormSubmit, editId, task }) => {
       <input
         type="text"
         placeholder="Author First Name"
+        className={`inputForm ${theme}`} onSubmit={handleSubmit}
         value={taskAuthorName}
         onChange={(e) => setTaskAuthorName(e.target.value)}
         required
@@ -59,12 +63,14 @@ const ToDoForm = ({ onFormSubmit, editId, task }) => {
       <input
         type="text"
         placeholder="Author Last Name"
+        className={`inputForm ${theme}`} onSubmit={handleSubmit}
         value={taskAuthorLastname}
         onChange={(e) => setTaskAuthorLastname(e.target.value)}
         required
       />
       <input
         type="date"
+        className={`inputForm ${theme}`} onSubmit={handleSubmit}
         value={taskDate}
         onChange={(e) => setTaskDate(e.target.value)}
         required

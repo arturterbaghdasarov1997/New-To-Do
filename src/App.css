@@ -5,6 +5,22 @@
   padding: 20px;
 }
 
+.App.light {
+  background-color: white;
+  color: black;
+}
+
+.App.dark {
+  background-color: black;
+  color: white;
+}
+
+button {
+  padding: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
 .taskForm {
   display: flex;
   flex-wrap: wrap;
@@ -91,6 +107,7 @@
   cursor: pointer;
   background-color: #1e0d7e;
   color: white;
+  border-radius: 10px;
 }
 
 .App button:hover {
@@ -191,5 +208,5 @@ Header button {
 }
 
 .button:hover {
-  background-color: black;
+  background-color: rgb(0, 0, 0);
 }
