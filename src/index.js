@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 import App from './App';
 import './index.css';
-import { LanguageProvider } from './LanguageContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <LanguageProvider>
+    <Provider store={store}>
       <App />
-    </LanguageProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

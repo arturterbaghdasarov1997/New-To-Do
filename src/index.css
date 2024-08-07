@@ -1,13 +1,229 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: Arial, sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body.light {
+  background-color: white;
+  color: black;
+}
+
+body.dark {
+  background-color: black;
+  color: white;
+}
+
+.App {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+button {
+  padding: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.taskForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border: 1px solid blue;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.taskForm input {
+  flex: 1;
+  min-width: 150px;
+}
+
+.taskForm button {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: green;
+  color: white;
+  border: none;
+}
+
+.Task {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border: 1px solid blue;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.Task.light {
+  background-color: #f9f9f9;
+  color: black;
+}
+
+.Task.dark {
+  background-color: #333;
+  color: white;
+}
+
+.inputForm.dark {
+  background-color: #333;
+  color: white;
+}
+
+.Task input {
+  flex: 1;
+  max-width: 800px;
+  width: 100%;
+}
+
+.Task button {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: green;
+  color: white;
+  border: none;
+}
+
+.tasksToggle {
+  margin-bottom: 10px;
+}
+
+.tasksToggle button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.toggle {
+  background-color: #2c14b3;
+  color: white;
+  border: none;
+}
+
+.tasksToggle button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input {
+  margin-bottom: 10px;
+}
+
+.App button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #1e0d7e;
+  color: white;
+}
+
+.App button:hover {
+  background-color: #0099ff;
+}
+
+.App button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.Task {
+  border: 1px solid blue;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.taskButtons {
+  display: flex;
+}
+
+.Task h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.Task p {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.Task button {
+  margin-right: 5px;
+}
+
+.Task input[type="text"] {
+  padding: 6px 10px;
+  margin-right: 10px;
+  font-size: 14px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.Task button.Done {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+
+.Task button.Edit {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+}
+
+.Task button.MarkComplete {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+
+.Task button.MarkIncomplete {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.Task button:hover {
+  opacity: 0.8;
+}
+
+.Header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Header button {
+  display: inline-block;
+  padding: 5px 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  width: 200px;
+  height: 50px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: rgb(0, 0, 0);
 }
