@@ -6,7 +6,6 @@ import MainPage from './pages/MainPage';
 import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
 import Header from './Header';
-import { LanguageProvider } from './LanguageContext';
 import './App.css';
 
 const App = () => {
@@ -18,21 +17,19 @@ const App = () => {
   }, [theme]);
 
   return (
-    <LanguageProvider>
-      <div className="App">
-        <button onClick={() => dispatch(toggleTheme())}>
-          Toggle Theme
-        </button>
-        <Header />
-        <Router>
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/create" element={<CreatePage />} />
-            <Route path="/edit/:id" element={<EditPage />} />
-          </Routes>
-        </Router>
-      </div>
-    </LanguageProvider>
+    <div className="App">
+      <button onClick={() => dispatch(toggleTheme())}>
+        Toggle Theme
+      </button>
+      <Header />
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/create" element={<CreatePage />} />
+          <Route path="/edit/:id" element={<EditPage />} />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 
