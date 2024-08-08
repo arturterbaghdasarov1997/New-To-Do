@@ -1,7 +1,10 @@
-import { useLanguage } from "./LanguageContext";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleLanguage } from './features/language/languageSlice';
 
 const Header = () => {
-    const { language, toggleLanguage } = useLanguage();
+    const language = useSelector(state => state.language);
+    const dispatch = useDispatch();
 
     const translations = {
         en: {
@@ -17,9 +20,11 @@ const Header = () => {
     return (
         <header>
             <h1>{translations[language].title}</h1>
-            <button onClick={toggleLanguage}>{translations[language].languageToggle}</button>
+            <button onClick={() => dispatch(toggleLanguage())}>
+                {translations[language].languageToggle}
+            </button>
         </header>
-    )
-}
+    );
+};
 
-export default Header
+export default Header;
