@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { Task } from '../features/tasks/tasksSlice';
 
-const ToDoForm = ({ onFormSubmit, editId, task }) => {
+interface ToDoFormProps {
+  onFormSubmit: (task: Task) => void;
+  editId?: string;
+  task?: Task;
+}
+
+const ToDoForm: React.FC<ToDoFormProps> = ({ onFormSubmit, editId, task }) => {
   const [taskName, setTaskName] = useState('');
   const [taskAuthorName, setTaskAuthorName] = useState('');
   const [taskAuthorLastname, setTaskAuthorLastname] = useState('');
   const [taskDate, setTaskDate] = useState('');
   const [error, setError] = useState('');
-  const theme = useSelector(state => state.theme);
 
   useEffect(() => {
     if (task) {
@@ -19,35 +23,29 @@ const ToDoForm = ({ onFormSubmit, editId, task }) => {
     }
   }, [task]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const taskData = {
-      id: editId,
+    const taskData: Task = {
+      id: editId || '',
       taskName,
       taskAuthorName,
       taskAuthorLastname,
-      taskDate
+      taskDate,
+      isCompleted: false,
     };
-    try {
-      await onFormSubmit(taskData);
-      setTaskName('');
-      setTaskAuthorName('');
-      setTaskAuthorLastname('');
-      setTaskDate('');
-      setError('');
-    } catch (err) {
-      console.error(err);
-      setError('An error occurred while submitting the form. Please try again.');
-    }
+    onFormSubmit(taskData);
+    setTaskName('');
+    setTaskAuthorName('');
+    setTaskAuthorLastname('');
+    setTaskDate('');
   };
 
   return (
-    <form className={`taskForm ${theme}`} onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       {error && <p className="error">{error}</p>}
       <input
         type="text"
         placeholder="Task Name"
-        className={`inputForm ${theme}`} onSubmit={handleSubmit}
         value={taskName}
         onChange={(e) => setTaskName(e.target.value)}
         required
@@ -55,7 +53,6 @@ const ToDoForm = ({ onFormSubmit, editId, task }) => {
       <input
         type="text"
         placeholder="Author First Name"
-        className={`inputForm ${theme}`} onSubmit={handleSubmit}
         value={taskAuthorName}
         onChange={(e) => setTaskAuthorName(e.target.value)}
         required
@@ -63,14 +60,12 @@ const ToDoForm = ({ onFormSubmit, editId, task }) => {
       <input
         type="text"
         placeholder="Author Last Name"
-        className={`inputForm ${theme}`} onSubmit={handleSubmit}
         value={taskAuthorLastname}
         onChange={(e) => setTaskAuthorLastname(e.target.value)}
         required
       />
       <input
         type="date"
-        className={`inputForm ${theme}`} onSubmit={handleSubmit}
         value={taskDate}
         onChange={(e) => setTaskDate(e.target.value)}
         required
@@ -78,12 +73,6 @@ const ToDoForm = ({ onFormSubmit, editId, task }) => {
       <button type="submit">{editId ? 'Update Task' : 'Add Task'}</button>
     </form>
   );
-};
-
-ToDoForm.propTypes = {
-  onFormSubmit: PropTypes.func.isRequired,
-  editId: PropTypes.string,
-  task: PropTypes.object
 };
 
 export default ToDoForm;
