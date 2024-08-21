@@ -7,9 +7,10 @@ import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
 import Header from './Header';
 import './App.css';
+import { RootState } from './store/store';
 
-const App = () => {
-  const theme = useSelector(state => state.theme);
+const App: React.FC = () => {
+  const theme = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
 
   useEffect(() => {

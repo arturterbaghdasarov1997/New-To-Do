@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { AppDispatch, RootState } from '../store/store';
 import { fetchTasks, deleteTask } from '../features/tasks/tasksThunks';
-import { toggleComletion } from '../features/tasks/tasksSlice';
+import { toggleCompletion } from '../features/tasks/tasksSlice';
 
-const MainPage = () => {
-  const dispatch = useDispatch();
-  const taskList = useSelector(state => state.tasks.taskList);
-  const loading = useSelector(state => state.tasks.loading);
-  const theme = useSelector(state => state.theme);
+const MainPage: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const taskList = useSelector((state: RootState) => state.tasks.taskList);
+  const loading = useSelector((state: RootState) => state.tasks.loading);
+  const theme = useSelector((state: RootState) => state.theme);
 
   useEffect(() => {
     dispatch(fetchTasks());
   }, [dispatch]);
 
-  if(loading) {
+  if (loading) {
     return <div>Loading . . .</div>;
   }
 
@@ -31,7 +32,7 @@ const MainPage = () => {
           <div className="taskButtons">
             <button
               className={task.isCompleted ? 'MarkIncomplete' : 'MarkComplete'}
-              onClick={() => dispatch(toggleComletion(task.id))}
+              onClick={() => dispatch(toggleCompletion(task.id))}
             >
               {task.isCompleted ? "Mark as Incomplete" : "Mark as Complete"}
             </button>

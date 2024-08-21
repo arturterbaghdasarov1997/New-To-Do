@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "lib": ["dom", "es6"],
+      "allowJs": true,
+      "jsx": "react-jsx",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "noEmit": true,
+      "resolveJsonModule": true
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "**/*.test.ts", "**/*.test.tsx"]
+  }
+  

@@ -1,10 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleLanguage } from './features/language/languageSlice';
+import { RootState, AppDispatch } from './store/store';
 
-const Header = () => {
-    const language = useSelector(state => state.language);
-    const dispatch = useDispatch();
+type Language = 'en' | 'ge';
+
+const Header: React.FC = () => {
+    const language = useSelector((state: RootState) => state.language) as Language;
+    const dispatch = useDispatch<AppDispatch>();
 
     const translations = {
         en: {
